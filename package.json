@@ -5,9 +5,14 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "firebase deploy --only hosting:default",
+    "deploy:wdp": "firebase deploy --only hosting:wdp",
+    "build:deploy": "npm run build && npm run deploy",
+    "build:deploy:wdp": "npm run build && npm run deploy:wdp"
   },
   "dependencies": {
+    "@snippyly/sdk": "^1.0.33",
     "core-js": "^3.8.3",
     "vue": "^2.6.14"
   },
