@@ -129,10 +129,6 @@ const initSnippyly = async () => {
   });
   console.log("init Snippyly", client);
 
-  // To enable text comment feature
-  const commentElement = client.getCommentElement();
-  commentElement.enableTextCommentButton(true);
-
   if (getUser()) {
     selectedUser = getUser();
     identify();
