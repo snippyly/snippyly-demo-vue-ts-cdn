@@ -12,6 +12,17 @@
     </snippyly-comment-tool>
     <div class="header">
       <snippyly-presence></snippyly-presence>
+      <div class="menu-container">
+        <span
+          v-for="menu in menus"
+          :key="menu.name"
+          class="menu"
+          :class="{ selected: selectedMenu.name === menu.name }"
+          v-on:click="onMenuChange(menu)"
+        >
+          {{ menu.name }}
+        </span>
+      </div>
       <div>
         <!-- <Home> -->
         <template v-if="renderActionContainer">
@@ -31,95 +42,58 @@
         <!-- </Home> -->
       </div>
     </div>
-    <div class="box-container">
-      <div class="box" v-for="box in boxes" :key="box" :id="'box' + box">
-        <span>{{ box }}</span>
-      </div>
-    </div>
-    <div class="text-comments-container">
-      <h1>Google Docs Style Comments</h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint commodi
-        architecto aliquid explicabo exercitationem nemo reprehenderit, rerum
-        autem nostrum aperiam corrupti ab, cumque tenetur incidunt dolor vel,
-        atque qui! Veritatis itaque omnis est in architecto eligendi temporibus
-        ipsa consectetur. Pariatur dolor beatae maxime suscipit repellat
-        consectetur nulla placeat, iusto ipsa labore. Eaque, ab quod! Illum
-        quibusdam ipsa possimus, aliquam dolore laborum dicta iusto temporibus
-        iste dolores officia minima ad porro ducimus facere esse, tenetur
-        exercitationem quae vitae? Soluta dicta sed ullam debitis accusamus
-        necessitatibus sequi perspiciatis. Exercitationem at voluptatum magni,
-        nisi repellat unde a delectus! Neque quod quae necessitatibus nisi.
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint commodi
-        architecto aliquid explicabo exercitationem nemo reprehenderit, rerum
-        autem nostrum aperiam corrupti ab, cumque tenetur incidunt dolor vel,
-        atque qui! Veritatis itaque omnis est in architecto eligendi temporibus
-        ipsa consectetur. Pariatur dolor beatae maxime suscipit repellat
-        consectetur nulla placeat, iusto ipsa labore. Eaque, ab quod! Illum
-        quibusdam ipsa possimus, aliquam dolore laborum dicta iusto temporibus
-        iste dolores officia minima ad porro ducimus facere esse, tenetur
-        exercitationem quae vitae? Soluta dicta sed ullam debitis accusamus
-        necessitatibus sequi perspiciatis. Exercitationem at voluptatum magni,
-        nisi repellat unde a delectus! Neque quod quae necessitatibus nisi.
-      </p>
-      <h3>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum
-        reiciendis optio fuga?
-      </h3>
-      <ul>
-        <li>Lorem ipsum dolor sit amet.</li>
-        <li>
-          Consequat exercitation consequat et laborum do consequat nostrud
-          adipisicing sunt laboris id eiusmod pariatur.
-        </li>
-        <li>Non non aliquip proident amet.</li>
-        <li>
-          Et labore sit amet ad do labore cupidatat tempor ad cillum excepteur
-          anim.
-        </li>
-        <li>
-          Consequat duis excepteur aute sit ipsum qui id dolore est cupidatat.
-        </li>
-        <li>
-          Incididunt ea veniam minim aute sunt exercitation ad amet non anim ut.
-        </li>
-      </ul>
-      <p>
-        Exercitation minim ad
-        <strong
-          >mollit esse cupidatat cillum tempor esse deserunt mollit aliquip.
-          Occaecat consectetur proident do deserunt nostrud pariatur
-          quis</strong
-        >
-        minim eiusmod eu cillum.
-        <i
-          >Excepteur sunt deserunt et duis exercitation
-          <b>nostrud commodo dolor ipsum irure ea.</b> Sit non dolor nisi
-          occaecat consectetur labore excepteur consectetur. Reprehenderit</i
-        >
-        labore ad deserunt nulla dolor veniam cupidatat nostrud consectetur.
-        Cillum ea minim consequat cillum aliquip
-        <u
-          >ad ea elit mollit eu culpa et eu. Amet Lorem deserunt voluptate
-          aliqua</u
-        >
-        esse tempor culpa mollit exercitation veniam exercitation. Consectetur
-        cupidatat <b>quis minim aliqua. Irure esse id fugiat</b> occaecat nulla
-        ipsum excepteur ea sit aliquip dolore et culpa. Id in officia dolore
-        aliqua ullamco anim
-        <s
-          >adipisicing deserunt reprehenderit et.
-          <b
-            >Mollit ea consequat exercitation
-            <u>deserunt cupidatat nulla irure</u> Lorem quis deserunt.</b
+    <div>
+      <div class="tabs-container">
+        <div class="tabs-block">
+          <div
+            v-for="(tab, index) in tabs"
+            :key="index"
+            class="tab"
+            :class="{ selected: selectedTab === index + 1 }"
+            v-on:click="onSelectTab(index + 1)"
           >
-          Anim id veniam id aliquip occae</s
-        >cat cupidatat duis labore aliquip in sint. Consectetur ea sit velit eu
-        culpa est eiusmod nisi do aliquip mollit officia tempor aliqua. Ea
-        cupidatat <sub>consequat laboris ipsum</sub> consequat est nostrud sint.
-        Minim officia occaecat <sup>sint culpa</sup> consequat. Esse amet
-        eiusmod exercitation irure ullamco enim et sunt ex aliquip non.
-      </p>
+            {{ tab }}
+            <div class="presence-container">
+              <snippyly-presence
+                :id="'tab' + index"
+                max-users="1"
+                :document-params="tabDocumentParams[index]"
+              ></snippyly-presence>
+            </div>
+          </div>
+        </div>
+        <div class="tabs-content">
+          <div v-if="selectedTab">
+            <span
+              >You are on {{ selectedMenu.name }},
+              {{ tabs[selectedTab - 1] }}.</span
+            ><br />
+            <span class="clear-btn" v-on:click="onSelectTab(undefined)"
+              >Clear Selection</span
+            >
+          </div>
+          <div v-if="!selectedTab">
+            You are on {{ selectedMenu.name }}.<br />You haven't selected any
+            sections.
+          </div>
+        </div>
+      </div>
+      <div class="notes-container">
+        <div class="notes-block">
+          <h3>NOTE:</h3>
+          <ul>
+            <li>
+              Presence: The avatar of other online users shows at document
+              level.
+            </li>
+            <li>
+              Cursors: Cursors of others online show at Section level. If no
+              section is selected it will show at Document level.
+            </li>
+            <li>Sections are always under Documents in hierarchy.</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -131,6 +105,17 @@ import { Users } from "./users";
 import { Snippyly as SnippylyClient, User } from "@snippyly/sdk";
 
 let selectedUser: User;
+const menus = [
+  { name: "Document 1", link: "" },
+  { name: "Document 2", link: "document-2" },
+  { name: "Document 3", link: "document-3" },
+];
+let selectedMenu = menus[0];
+const tabs = ["Child Document 1", "Child Document 2", "Child Document 3"];
+const tabDocumentParams = tabs.map((tab, index) => {
+  return JSON.stringify({ selectedTab: index + 1 });
+});
+let selectedTab: any;
 
 declare var Snippyly: SnippylyClient;
 let client: SnippylyClient;
@@ -179,6 +164,23 @@ const getUser = () => {
   );
 };
 
+const updateDocumentId = (documentId: string) => {
+  if (client) {
+    client.setDocumentId(documentId);
+  }
+};
+
+const updateDocumentParams = () => {
+  if (client) {
+    if (selectedTab) {
+      const params = { selectedTab };
+      client.setDocumentParams(params);
+    } else {
+      client.removeDocumentParams();
+    }
+  }
+};
+
 export default Vue.extend({
   name: "App",
   data: () => {
@@ -187,7 +189,11 @@ export default Vue.extend({
       selectedUser: getUser(),
       isUserLoggedIn: !!selectedUser,
       renderActionContainer: true,
-      boxes: Array.from({ length: 25 }, (_, i) => i + 1),
+      menus,
+      selectedMenu,
+      tabs,
+      selectedTab,
+      tabDocumentParams,
     };
   },
   methods: {
@@ -200,6 +206,28 @@ export default Vue.extend({
       });
     },
     signOut,
+    onSelectTab(value: any) {
+      this.renderActionContainer = false;
+      this.selectedTab = value;
+      selectedTab = value;
+      this.$nextTick(() => {
+        this.renderActionContainer = true;
+      });
+      updateDocumentParams();
+    },
+    onMenuChange(menu: any) {
+      if (menu.name !== selectedMenu.name) {
+        this.renderActionContainer = false;
+        this.selectedMenu = menu;
+        selectedMenu = menu;
+        this.selectedTab = undefined;
+        selectedTab = undefined;
+        this.$nextTick(() => {
+          this.renderActionContainer = true;
+        });
+        updateDocumentId(`${window.location.href}${menu.link}`);
+      }
+    },
     // isUserLoggedIn: () => !!selectedUser
   },
   computed: {
@@ -233,22 +261,79 @@ export default Vue.extend({
   display: flex;
   align-items: center;
 }
-.box-container {
-  display: flex;
-  flex-wrap: wrap;
+
+.menu {
+  margin: 0 12px;
+  cursor: pointer;
 }
 
-.box {
-  height: 200px;
-  /* min-width: 200px; */
-  background: greenyellow;
-  border-radius: 8px;
-  flex: 0 0 202px;
-  margin: 8px;
+.menu.selected {
+  color: #0084ff;
+  font-weight: bold;
+}
+
+.tabs-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 32px;
+  padding: 24px;
+}
+
+.tabs-block {
+  margin-right: 64px;
+}
+
+.tab {
+  padding: 1rem;
+  margin: 1rem;
+  background: #f7f7f7;
+  min-width: 12rem;
+  text-align: center;
+  cursor: pointer;
+  min-height: 6rem;
+  position: relative;
+  box-sizing: content-box;
+}
+
+.tab.selected {
+  background: #0084ff;
+  color: white;
+  font-weight: bold;
+}
+
+.tabs-content {
+  flex: 100%;
+  text-align: center;
+  align-self: center;
+}
+
+.clear-btn {
+  cursor: pointer;
+  color: #0084ff;
+  text-decoration: underline;
+}
+
+.notes-container {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+
+.notes-block {
+  margin: 24px;
+  padding: 8px 24px;
+  background: #f7f7f7;
+  border-radius: 8px;
+}
+
+.presence-container {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.presence-container .s-presence-avatar {
+  width: 1rem !important;
+  height: 1rem !important;
+  font-size: 0.7rem;
 }
 
 snippyly-comment-tool {
@@ -271,9 +356,5 @@ snippyly-comment-tool .add-comment-btn {
 snippyly-comment-tool .add-comment-btn img {
   width: 1.5rem;
   height: 1.5rem;
-}
-
-.text-comments-container {
-  padding: 24px;
 }
 </style>
