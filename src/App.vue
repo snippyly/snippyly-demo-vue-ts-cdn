@@ -102,7 +102,7 @@
 import Vue from "vue";
 import loadSnippyly from "./loadSnippyly";
 import { Users } from "./users";
-import { Snippyly as SnippylyClient, User } from "@snippyly/sdk";
+import { Snippyly as SnippylyClient, User } from "@snippyly/types";
 
 let selectedUser: User;
 const menus = [
