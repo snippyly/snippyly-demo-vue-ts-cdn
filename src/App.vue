@@ -20,7 +20,10 @@
         <span
           class="menu"
           v-on:click="
-            navigateTo('https://snippyly-demo-vue-ts-cdn-wdp.web.app/', '_blank')
+            navigateTo(
+              'https://snippyly-demo-vue-ts-cdn-wdp.web.app/',
+              '_blank'
+            )
           "
           >Document Params</span
         >
@@ -90,6 +93,9 @@ const signIn = (user: User) => {
 };
 
 const signOut = () => {
+  if (client) {
+    client.signOutUser();
+  }
   localStorage.removeItem("user");
   window.location.reload();
 };
