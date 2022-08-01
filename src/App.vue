@@ -134,6 +134,8 @@ const initSnippyly = async () => {
   const commentElement = client.getCommentElement();
   commentElement.enableAttachment(true);
 
+  updateDocumentId(`${window.location.href}${selectedMenu.link}`);
+
   if (getUser()) {
     selectedUser = getUser();
     identify();
@@ -151,9 +153,9 @@ const signIn = (user: User) => {
   // this.componentKey += 1;
 };
 
-const signOut = () => {
+const signOut = async () => {
   if (client) {
-    client.signOutUser();
+    await client.signOutUser();
   }
   localStorage.removeItem("user");
   window.location.reload();
