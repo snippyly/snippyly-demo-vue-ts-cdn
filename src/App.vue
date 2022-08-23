@@ -58,7 +58,7 @@
               <snippyly-presence
                 :id="'tab' + index"
                 max-users="1"
-                :document-params="tabDocumentParams[index]"
+                :location="tabDocumentParams[index]"
               ></snippyly-presence>
             </div>
           </div>
@@ -134,7 +134,7 @@ const initSnippyly = async () => {
   const commentElement = client.getCommentElement();
   commentElement.enableAttachment(true);
 
-  updateDocumentId(`${window.location.href}${selectedMenu.link}`);
+  updateDocumentId(`${window.location.origin}/${selectedMenu.link}`);
 
   if (getUser()) {
     selectedUser = getUser();
@@ -180,9 +180,9 @@ const updateDocumentParams = () => {
   if (client) {
     if (selectedTab) {
       const params = { selectedTab };
-      client.setDocumentParams(params);
+      client.setLocation(params);
     } else {
-      client.removeDocumentParams();
+      client.removeLocation();
     }
   }
 };
@@ -203,7 +203,7 @@ export default Vue.extend({
     };
   },
   methods: {
-    signIn(user: User) {
+    signIn(user: User | any) {
       this.renderActionContainer = false;
       signIn(user);
       this.$nextTick(() => {
@@ -231,7 +231,7 @@ export default Vue.extend({
         this.$nextTick(() => {
           this.renderActionContainer = true;
         });
-        updateDocumentId(`${window.location.href}${menu.link}`);
+        updateDocumentId(`${window.location.origin}/${menu.link}`);
       }
     },
     // isUserLoggedIn: () => !!selectedUser
