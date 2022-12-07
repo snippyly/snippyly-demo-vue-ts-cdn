@@ -41,23 +41,20 @@
 
 <script lang="ts">
 import Vue from "vue";
-import loadSnippyly from "./loadSnippyly";
 import { Users } from "./users";
 import { Snippyly as SnippylyModel, User } from "@snippyly/types";
 import { SnippylyClient } from "./snippylyClient";
+import { initSnippyly, getSnippylyClient } from "@snippyly/client";
 
 let selectedUser: User;
 
 declare var Snippyly: SnippylyModel;
 let client: SnippylyModel;
 
-const initSnippyly = async () => {
+const initializeSnippyly = async () => {
+  await initSnippyly('hny91vx3KUxEIp61jBd1');
+  client = await getSnippylyClient();
   console.log("snippyly loaded", Snippyly);
-  client = await Snippyly.init("hny91vx3KUxEIp61jBd1", {
-    featureAllowList: [], // To allow specific features only
-    // userIdAllowList: ['abcd'], // To allow specific users only
-    urlAllowList: [], // To allow snippyly in specific screens only
-  });
   console.log("init Snippyly", client);
   SnippylyClient.setClient(client);
 
@@ -154,7 +151,7 @@ export default Vue.extend({
     loggedInUser: () => selectedUser,
   },
   mounted() {
-    loadSnippyly(initSnippyly);
+    initializeSnippyly();
   },
 });
 </script>
