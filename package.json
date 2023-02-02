@@ -12,12 +12,12 @@
     "build:deploy:wdp": "npm run build && npm run deploy:wdp"
   },
   "dependencies": {
-    "@snippyly/client": "^1.0.2",
+    "@snippyly/client": "^1.0.19",
     "core-js": "^3.8.3",
     "vue": "^2.6.14"
   },
   "devDependencies": {
-    "@snippyly/types": "^1.0.62",
+    "@snippyly/types": "^1.0.81",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",
