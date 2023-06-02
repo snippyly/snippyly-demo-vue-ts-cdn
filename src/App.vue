@@ -1,13 +1,13 @@
 <template>
   <div>
-    <snippyly-cursor></snippyly-cursor>
-    <snippyly-comments-sidebar></snippyly-comments-sidebar>
-    <snippyly-comment-tool></snippyly-comment-tool>
-    <snippyly-recorder-control-panel></snippyly-recorder-control-panel>
-    <snippyly-recorder-notes></snippyly-recorder-notes>
-    <snippyly-huddle></snippyly-huddle>
+    <velt-cursor></velt-cursor>
+    <velt-comments-sidebar></velt-comments-sidebar>
+    <velt-comment-tool></velt-comment-tool>
+    <velt-recorder-control-panel></velt-recorder-control-panel>
+    <velt-recorder-notes></velt-recorder-notes>
+    <velt-huddle></velt-huddle>
     <div class="header">
-      <snippyly-presence></snippyly-presence>
+      <velt-presence></velt-presence>
       <div class="menu-container">
         <span class="menu" v-on:click="navigateTo('/')">Home</span>
         <span class="menu" v-on:click="navigateTo('/stream-view')">Stream View</span>
@@ -42,34 +42,34 @@
 <script lang="ts">
 import Vue from "vue";
 import { Users } from "./users";
-import { Snippyly as SnippylyModel, User } from "@snippyly/types";
-import { SnippylyClient } from "./snippylyClient";
-import { initSnippyly, getSnippylyClient } from "@snippyly/client";
+import { Velt as VeltModel, User } from "@veltdev/types";
+import { VeltClient } from "./veltClient";
+import { initVelt, getVeltClient } from "@veltdev/client";
 
 let selectedUser: User;
 
-declare var Snippyly: SnippylyModel;
-let client: SnippylyModel;
+declare var Velt: VeltModel;
+let client: VeltModel;
 
-const initializeSnippyly = async () => {
-  await initSnippyly('hny91vx3KUxEIp61jBd1');
-  client = await getSnippylyClient();
-  console.log("snippyly loaded", Snippyly);
-  console.log("init Snippyly", client);
-  SnippylyClient.setClient(client);
+const initializeVelt = async () => {
+  await initVelt('hny91vx3KUxEIp61jBd1');
+  client = await getVeltClient();
+  console.log("velt loaded", Velt);
+  console.log("init Velt", client);
+  VeltClient.setClient(client);
 
   // To enable text comment feature
   const commentElement = client.getCommentElement();
-  commentElement.enableTextComments(true);
+  commentElement.enableTextComments();
   // Enable attachment feature
-  commentElement.enableAttachment(true);
+  commentElement.enableAttachments();
   // Show screen size info
-  commentElement.showScreenSizeInfo(true);
+  commentElement.enableDeviceInfo();
   // To enable live selection feature
   const selectionElement = client.getSelectionElement();
-  selectionElement.enableLiveSelection(true);
+  selectionElement.enableLiveSelection();
   // Set document id
-  client.setDocumentId(excludeSnippylyParamsFromUrl(window.location.href));
+  client.setDocumentId(excludeVeltParamsFromUrl(window.location.href));
 
   if (getUser()) {
     selectedUser = getUser();
@@ -77,7 +77,7 @@ const initializeSnippyly = async () => {
   }
 };
 
-const excludeSnippylyParamsFromUrl = (url: string) => {
+const excludeVeltParamsFromUrl = (url: string) => {
   try {
     const tempUrl = new URL(url);
     ['review', 'sreviewId', 'snippyly-user', 'scommentId', 'stagId'].forEach((param) => {
@@ -151,7 +151,7 @@ export default Vue.extend({
     loggedInUser: () => selectedUser,
   },
   mounted() {
-    initializeSnippyly();
+    initializeVelt();
   },
 });
 </script>
@@ -198,7 +198,7 @@ export default Vue.extend({
   font-size: 32px;
 }
 
-snippyly-comment-tool {
+velt-comment-tool {
   position: fixed;
   bottom: 24px;
   right: 24px;
